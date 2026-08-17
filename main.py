@@ -34,3 +34,29 @@ from contextlib import contextmanager
 #     print("Caught")
     
     
+@contextmanager
+def dict_reader(info_dict):
+    try:
+        old_theme = info_dict['theme']
+        old_lang = info_dict['language']
+        info_dict['theme'] = 'dark'
+        info_dict['language'] = 'malayalam'
+        yield info_dict
+    finally:
+        info_dict['theme'] = old_theme
+        info_dict['language'] = old_lang
+        print(info_dict['theme'])
+
+
+settings = {
+    "theme": "light",
+    "language": "English"
+}    
+try:
+    with dict_reader(settings):
+        print(settings)
+        raise ValueError("Something went wrong")
+except ValueError:
+    print("Exception caught")
+
+print(settings)
